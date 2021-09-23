@@ -3,20 +3,22 @@ kind: Ingress
 metadata:
   name: minimal-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-  - host: wilmutd.com
-    http:
+  - http:
       paths:
-      - path: /first
+      - path: /first(/|$)(.*) 
         pathType: Prefix
         backend:
           service:
             name: first-backend
             port:
               number: 80
-      - path: /second
+      - path: /second(/|$)(.*)
         pathType: Prefix
         backend:
           service:
